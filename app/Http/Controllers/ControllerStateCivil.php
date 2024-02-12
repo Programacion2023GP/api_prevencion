@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\MeansEmployees;
+use App\Models\StateCivil;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
-class ControllerMeanEmployees extends Controller
+class ControllerStateCivil extends Controller
 {
     public function create(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $create = MeansEmployees::create([
+            $create = StateCivil::create([
                 'name' => $request->name,
 
             ]);
@@ -34,7 +34,7 @@ class ControllerMeanEmployees extends Controller
         try {
            // $list = DB::select('SELECT * FROM users where active = 1');
            // User::on('mysql_gp_center')->get();
-           $list = MeansEmployees::orderBy('id', 'desc')
+           $list = StateCivil::orderBy('id', 'desc')
            ->where('active', 1)
           
            ->get();
@@ -55,7 +55,7 @@ class ControllerMeanEmployees extends Controller
      {
          $response->data = ObjResponse::DefaultResponse();
          try {
-            $site = MeansEmployees::find($request->id);
+            $site = StateCivil::find($request->id);
             if ($site) {
                 $site->name = $request->name;
                 $site->save();
@@ -78,10 +78,7 @@ class ControllerMeanEmployees extends Controller
              
  
            
-            $affectedRows = MeansEmployees::where('id', $id)
-            ->update([
-                'active' => DB::raw('NOT active'),
-            ]);
+            $affectedRows = StateCivil::where('id', $id)
             // ->where(function ($query) use ($id) {
             //     $query->whereNotExists(function ($subquery) use ($id) {
             //         $subquery->select(DB::raw(1))
@@ -90,6 +87,9 @@ class ControllerMeanEmployees extends Controller
             //             ->where('type_id', $id);
             //     });
             // })
+            ->update([
+                'active' => DB::raw('NOT active'),
+            ]);
         
         if ($affectedRows === 0) {
             throw new \Exception('No se puede eliminar.');

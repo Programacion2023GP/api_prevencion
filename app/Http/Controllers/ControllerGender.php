@@ -5,6 +5,7 @@ use App\Models\Gender;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class ControllerGender extends Controller
 {
