@@ -104,4 +104,28 @@ class ControllerChildrens extends Controller
          }
          return response()->json($response, $response->data["status_code"]);
      }
+     public function values(Response $response)
+     {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+           // $list = DB::select('SELECT * FROM users where active = 1');
+           // User::on('mysql_gp_center')->get();
+           $list = Childrens::orderBy('id', 'desc')
+           ->where('active', 1)
+           ->select('name as text', 'id as value')
+           ->get();
+
+       
+       
+       
+  
+           $response->data = ObjResponse::CorrectResponse();
+           $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
+           $response->data["alert_text"] = "sitios encontrados";
+           $response->data["result"] = $list;
+        } catch (\Exception $ex) {
+           $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+     }
 }

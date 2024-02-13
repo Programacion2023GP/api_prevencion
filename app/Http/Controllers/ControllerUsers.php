@@ -5,8 +5,14 @@ use App\Models\User;
 use App\Models\ObjResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+
+use App\Events\Events;
+use App\Models\Groupextuser;
 
 class ControllerUsers extends Controller
 {
@@ -25,6 +31,7 @@ class ControllerUsers extends Controller
               'email' => $request->email,
               'name' => $request->name,
               'role' => $request->role,
+              'dependece_id'=>$request->dependece_id,
           ]);
     //       if ($request->has('groups') && is_array($request->groups) && count($request->groups) > 0) {
     //        foreach ($request->groups as $item) {
@@ -55,11 +62,7 @@ class ControllerUsers extends Controller
           'password' => 'required'
        ]);
        $user = User::where("$field", "$value")->where("active",1)->first();
-       $query = User::select('users.*',
-       DB::raw("GROUP_CONCAT(DISTINCT groupsextuser.group) as departamentos")
-       )->leftjoin('groupsextuser', 'groupsextuser.user_id', '=', 'users.id')
-       ->where("users.id",$user->id)
-       ->groupBy('users.id')->orderBy('role')->get();
+      
        if (!$user || !Hash::check($request->password, $user->password)) {
 
           throw ValidationException::withMessages([
@@ -75,7 +78,7 @@ class ControllerUsers extends Controller
        $response->data = ObjResponse::CorrectResponse();
        $response->data["message"] = 'peticion satisfactoria | usuario logeado.';
        $response->data["result"]["token"] = $token;
-       $response->data["result"]["user"]= $query;
+       $response->data["result"]["user"]= $user;
        return response()->json($response, $response->data["status_code"]);
     }
     public function update(Request $request, Response $response)
@@ -87,7 +90,7 @@ class ControllerUsers extends Controller
                $user->name = $request->name;
                $user->email = $request->email;
                $user->role = $request->role;
-
+               $user->dependece_id  = $request->dependece_id;
                $user->save();
 
            }
@@ -106,7 +109,7 @@ class ControllerUsers extends Controller
     {
         try {
           //  DB::table('personal_access_tokens')->where('tokenable_id', $id)->delete();
-          auth()->user()->tokens()->delete();
+          Auth::user()->tokens()->delete();
 
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | sesión cerrada.';

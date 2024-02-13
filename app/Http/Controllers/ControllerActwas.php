@@ -1,18 +1,19 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\indentified;
+use App\Models\Actwa;
 use App\Models\ObjResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
-class ControllerIndentified extends Controller
+
+class ControllerActwas extends Controller
 {
     public function create(Request $request, Response $response)
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $create = indentified::create([
+            $create = Actwa::create([
                 'name' => $request->name,
 
             ]);
@@ -33,7 +34,7 @@ class ControllerIndentified extends Controller
         try {
            // $list = DB::select('SELECT * FROM users where active = 1');
            // User::on('mysql_gp_center')->get();
-           $list = indentified::orderBy('id', 'desc')
+           $list = Actwa::orderBy('id', 'desc')
            ->where('active', 1)
           
            ->get();
@@ -54,7 +55,7 @@ class ControllerIndentified extends Controller
      {
          $response->data = ObjResponse::DefaultResponse();
          try {
-            $site = indentified::find($request->id);
+            $site = Actwa::find($request->id);
             if ($site) {
                 $site->name = $request->name;
                 $site->save();
@@ -77,7 +78,7 @@ class ControllerIndentified extends Controller
              
  
            
-            $affectedRows = indentified::where('id', $id)
+            $affectedRows = Actwa::where('id', $id)
             // ->where(function ($query) use ($id) {
             //     $query->whereNotExists(function ($subquery) use ($id) {
             //         $subquery->select(DB::raw(1))
@@ -110,7 +111,7 @@ class ControllerIndentified extends Controller
         try {
            // $list = DB::select('SELECT * FROM users where active = 1');
            // User::on('mysql_gp_center')->get();
-           $list = indentified::orderBy('id', 'desc')
+           $list = Actwa::orderBy('id', 'desc')
            ->where('active', 1)
            ->select('name as text', 'id as value')
            ->get();

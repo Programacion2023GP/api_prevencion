@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -19,6 +20,8 @@ return new class extends Migration
 
             // $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->default(Hash::make('123456'));
+            $table->foreignId('dependece_id')->nullable()->constrained('dependeces', 'id');
+
             $table->boolean('active')->default(true);
             $table->dateTime('deleted_at')->nullable();
 

@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dependeces', function (Blueprint $table) {
+        Schema::create('actwas', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('active')->default(true);
-            $table->foreignId('dependece_id')->nullable()->constrained('dependeces', 'id');
             $table->dateTime('deleted_at')->nullable();
             $table->timestamps();
         });
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dependeces');
+        Schema::dropIfExists('actwas');
     }
 };
