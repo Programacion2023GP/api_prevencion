@@ -31,6 +31,7 @@ class Suicidepreventions extends Model
         'colonydeed',
         'personinformate',
         'curp',
+        'description',
         'age',
         'datereindence',
         'user_id',

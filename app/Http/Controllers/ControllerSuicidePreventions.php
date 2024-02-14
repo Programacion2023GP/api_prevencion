@@ -37,6 +37,7 @@ class ControllerSuicidePreventions extends Controller
                 'colonydeed' => $request->colonydeed,
                 'personinformate' => $request->personinformate,
                 'curp' => $request->curp,
+                'description'=> $request->description,
                 'age' => $request->age,
                 'datereindence' => date('Y-m-d', strtotime($request->datereindence)),
                 'user_id' => Auth::user()->id,

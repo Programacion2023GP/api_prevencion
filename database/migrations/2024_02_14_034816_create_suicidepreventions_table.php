@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('colonydeed');
             $table->string('personinformate');
             $table->string('curp');
+            $table->string('description');
             $table->integer('age');
             $table->date('datereindence');
             $table->foreignId('user_id')->constrained('users','id');
@@ -50,7 +51,7 @@ return new class extends Migration
             $table->foreignId('indetified_id')->constrained('indentified','id');
             $table->foreignId('meanemployeed_id')->constrained('meansemployees','id');
             $table->foreignId('activies_id')->constrained('activities','id');
-
+            
             
             $table->boolean('active')->default(true);
             $table->dateTime('deleted_at')->nullable();
