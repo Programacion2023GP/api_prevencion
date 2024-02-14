@@ -79,14 +79,14 @@ class ControllerDiseases extends Controller
  
            
             $affectedRows = Diseases::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.diseases_id = diseases.id')
+                        ->where('diseases_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);

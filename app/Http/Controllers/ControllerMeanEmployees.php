@@ -79,17 +79,17 @@ class ControllerMeanEmployees extends Controller
  
            
             $affectedRows = MeansEmployees::where('id', $id)
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.meanemployeed_id = meansemployees.id')
+                        ->where('meanemployeed_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
         
         if ($affectedRows === 0) {
             throw new \Exception('No se puede eliminar.');

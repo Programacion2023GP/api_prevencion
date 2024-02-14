@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ControllerActivies;
 use App\Http\Controllers\ControllerActwas;
 use App\Http\Controllers\ControllerAdictions;
 use App\Http\Controllers\ControllerBelief;
@@ -8,6 +9,7 @@ use App\Http\Controllers\ControllerChildrens;
 use App\Http\Controllers\ControllerDependence;
 use App\Http\Controllers\ControllerDiseases;
 use App\Http\Controllers\ControllerExistence;
+use App\Http\Controllers\ControllerFamily;
 use App\Http\Controllers\ControllerGender;
 use App\Http\Controllers\ControllerIndentified;
 use App\Http\Controllers\ControllerLiteracy;
@@ -15,6 +17,7 @@ use App\Http\Controllers\ControllerMeanEmployees;
 use App\Http\Controllers\ControllerSchool;
 use App\Http\Controllers\ControllerSites;
 use App\Http\Controllers\ControllerStateCivil;
+use App\Http\Controllers\ControllerSuicidePreventions;
 use App\Http\Controllers\ControllerUsers;
 use App\Http\Controllers\ControllerViolence;
 use Illuminate\Http\Request;
@@ -140,11 +143,11 @@ Route::middleware('auth:sanctum')->group(function(){
 
     });
     Route::prefix('family')->group(function () {
-        Route::post('/create', [ControllerViolence::class, 'create']);
-        Route::post('/update', [ControllerViolence::class, 'update']);
-        Route::get('/index', [ControllerViolence::class, 'index']);
-        Route::post('/destroy/{id}', [ControllerViolence::class, 'destroy']);
-        Route::get('/values', [ControllerViolence::class, 'values']);
+        Route::post('/create', [ControllerFamily::class, 'create']);
+        Route::post('/update', [ControllerFamily::class, 'update']);
+        Route::get('/index', [ControllerFamily::class, 'index']);
+        Route::post('/destroy/{id}', [ControllerFamily::class, 'destroy']);
+        Route::get('/values', [ControllerFamily::class, 'values']);
 
     });
     Route::prefix('school')->group(function () {
@@ -178,14 +181,29 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('/index', [ControllerUsers::class, 'index']);
 
     });
+    Route::prefix('activies')->group(function () {
+        Route::post('/create', [ControllerActivies::class, 'create']);
+        Route::post('/update', [ControllerActivies::class, 'update']);
+        Route::get('/index', [ControllerActivies::class, 'index']);
+        Route::post('/destroy/{id}', [ControllerActivies::class, 'destroy']);
+        Route::get('/values', [ControllerActivies::class, 'values']);
+
+    });
+    Route::prefix('prevention')->group(function () {
+        Route::post('/create', [ControllerSuicidePreventions::class, 'create']);
+        Route::get('/findIndex', [ControllerSuicidePreventions::class, 'findIndex']);
+        Route::get('/show', [ControllerSuicidePreventions::class, 'Show']);
+        
+
+    });
     Route::prefix('auth')->group(function () {
 
         Route::post('/logout', [ControllerUsers::class, 'logout']);
     });
 });
 Route::prefix('auth')->group(function () {
-   
+
     Route::post('/login', [ControllerUsers::class, 'login']);
- 
+
 
 });

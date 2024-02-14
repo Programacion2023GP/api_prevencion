@@ -79,14 +79,14 @@ class ControllerCause extends Controller
  
            
             $affectedRows = Cause::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.causes_id = cause.id')
+                        ->where('causes_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);

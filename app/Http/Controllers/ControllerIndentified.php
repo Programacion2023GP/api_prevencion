@@ -78,14 +78,14 @@ class ControllerIndentified extends Controller
  
            
             $affectedRows = indentified::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.indetified_id = indentified.id')
+                        ->where('indetified_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);

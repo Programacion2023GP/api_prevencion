@@ -79,14 +79,14 @@ class ControllerDependence extends Controller
  
            
             $affectedRows = Dependence::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.dependeces_id = dependeces.id')
+                        ->where('dependeces_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);

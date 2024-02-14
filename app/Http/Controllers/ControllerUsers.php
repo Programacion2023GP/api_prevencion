@@ -125,10 +125,23 @@ class ControllerUsers extends Controller
         try {
            // $list = DB::select('SELECT * FROM users where active = 1');
            // User::on('mysql_gp_center')->get();
-           $list = User::orderBy('id', 'desc')
-           ->where('active', 1)
-          
-           ->get();
+           $userRole = Auth::user()->role;
+
+           // Inicializar la consulta de usuarios
+           $query = User::orderBy('id', 'desc')->where('active', 1);
+           
+           // Si el usuario autenticado es "Super Admin sistemas", obtener todos los usuarios
+           if ($userRole == "SuperAdmin") {
+            $list = $query->where('role', '<>', 'SuperAdmin')->get();
+         } 
+           // Si el usuario autenticado es "Administrador", obtener solo los "Capturista"
+           elseif ($userRole == "Administrador") {
+               $list = $query->where('role', 'Capturista')->get();
+           } 
+           // Si el usuario autenticado es "Capturista", no devolver a nadie
+           elseif ($userRole == "Capturista") {
+               $list = collect(); // Devolver una colección vacía
+           }
        
        
        
@@ -150,14 +163,14 @@ class ControllerUsers extends Controller
  
            
             $affectedRows = User::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+               $query->whereNotExists(function ($subquery) use ($id) {
+                   $subquery->select(DB::raw(1))
+                       ->from('suicidepreventions')
+                       ->whereRaw('suicidepreventions.user_id = users.id')
+                       ->where('user_id', $id);
+               });
+           })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);
