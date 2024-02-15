@@ -16,16 +16,16 @@ class ControllerFamily extends Controller
                 'name' => $request->name,
 
             ]);
-        
+
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Petición satisfactoria | grupo registrado.';
             $response->data["alert_text"] = "Se ha creado correctamente el sitio";
         } catch (\Exception $ex) {
             $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
-        
+
         return response()->json($response, $response->data["status_code"]);
-        
+
     }
     public function index(Response $response)
      {
@@ -35,12 +35,12 @@ class ControllerFamily extends Controller
            // User::on('mysql_gp_center')->get();
            $list = Family::orderBy('id', 'desc')
            ->where('active', 1)
-          
+
            ->get();
-       
-       
-       
-  
+
+
+
+
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
            $response->data["alert_text"] = "sitios encontrados";
@@ -74,31 +74,31 @@ class ControllerFamily extends Controller
      {
          $response->data = ObjResponse::DefaultResponse();
          try {
-             
- 
-           
+
+
+
             $affectedRows = Family::where('id', $id)
-            // ->where(function ($query) use ($id) {
-            //     $query->whereNotExists(function ($subquery) use ($id) {
-            //         $subquery->select(DB::raw(1))
-            //             ->from('guards')
-            //             ->whereRaw('guards.type_id = types.id')
-            //             ->where('type_id', $id);
-            //     });
-            // })
+            ->where(function ($query) use ($id) {
+                $query->whereNotExists(function ($subquery) use ($id) {
+                    $subquery->select(DB::raw(1))
+                        ->from('suicidepreventions')
+                        ->whereRaw('suicidepreventions.family_id = family.id')
+                        ->where('family_id', $id);
+                });
+            })
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);
-        
+
         if ($affectedRows === 0) {
-            throw new \Exception('No se puede eliminar.');
+            throw new \Exception('No se puede eliminar ya existe un registro con el tipo de familia');
         }
 
 
              $response->data = ObjResponse::CorrectResponse();
              $response->data["message"] = 'peticion satisfactoria | sitio dado de baja.';
              $response->data["alert_text"] ='sitio dado de baja';
- 
+
          } catch (\Exception $ex) {
              $response->data = ObjResponse::CatchResponse($ex->getMessage());
          }
@@ -115,10 +115,10 @@ class ControllerFamily extends Controller
            ->select('name as text', 'id as value')
            ->get();
 
-       
-       
-       
-  
+
+
+
+
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
            $response->data["alert_text"] = "sitios encontrados";

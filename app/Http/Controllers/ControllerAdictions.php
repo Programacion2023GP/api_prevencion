@@ -92,7 +92,7 @@ class ControllerAdictions extends Controller
             ]);
         
         if ($affectedRows === 0) {
-            throw new \Exception('No se puede eliminar.');
+            throw new \Exception('No se puede eliminar ya existe un registro con la adicción.');
         }
 
 

@@ -12,6 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use App\Models\User;
 
 class ControllerSuicidePreventions extends Controller
 {
@@ -120,12 +121,18 @@ class ControllerSuicidePreventions extends Controller
      {
         $response->data = ObjResponse::DefaultResponse();
         try {
-           // $list = DB::select('SELECT * FROM users where active = 1');
-           // User::on('mysql_gp_center')->get();
-           $list = Querypreventionsuicide::orderBy('id', 'desc')
+           
+           $userRole = Auth::user()->role;
+
+           $query =  Querypreventionsuicide::orderBy('id', 'desc')
            ->where('active', 1)
+          ;
+           
           
-           ->get();
+           if ($userRole == "Capturista") {
+            $query =$query->where('user_id', Auth::user()->id);
+            }
+           $list = $query->get();
        
        
        

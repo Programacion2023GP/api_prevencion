@@ -93,7 +93,7 @@ public function index(Response $response)
         ]);
     
     if ($affectedRows === 0) {
-        throw new \Exception('No se puede eliminar.');
+        throw new \Exception('No se puede eliminar ya existe un registro con el centro educativo');
     }
 
 
