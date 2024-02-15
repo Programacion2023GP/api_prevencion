@@ -207,3 +207,6 @@ Route::prefix('auth')->group(function () {
 
 
 });
+Route::get("hola", function() {
+    return "hola";
+});
