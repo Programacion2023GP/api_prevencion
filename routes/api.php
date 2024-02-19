@@ -194,7 +194,8 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create', [ControllerSuicidePreventions::class, 'create']);
         Route::get('/findIndex', [ControllerSuicidePreventions::class, 'findIndex']);
         Route::get('/show', [ControllerSuicidePreventions::class, 'Show']);
-
+        Route::get('/index', [ControllerSuicidePreventions::class, 'index']);
+        Route::post('/update/{id}', [ControllerSuicidePreventions::class, 'update']);
 
     });
     Route::prefix('auth')->group(function () {

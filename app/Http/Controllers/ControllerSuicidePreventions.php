@@ -24,46 +24,105 @@ class ControllerSuicidePreventions extends Controller
             $dependece = Auth::user()->role == "Capturista" ? Auth::user()->dependece_id : $request->dependeces_id;
             $create = Suicidepreventions::create([
                 'dateregister' => $formattedDate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateregister))),
-                'name' => $request->name,
+                'name' => $request->name ?? null,
                 'invoice' => $request->invoice,
                 'datecurrence' => date('Y-m-d', strtotime($request->datecurrence)),
-                'cp' => $request->cp,
-                'states' => $request->states,
-                'municipys' => $request->municipys,
-                'colony' => $request->colony,
-                'datesuccess' =>date('Y-m-d', strtotime($request->datesuccess)),
+                'cp' => $request->cp?? null,
+                'states' => $request->states?? null,
+                'municipys' => $request->municipys?? null,
+                'colony' => $request->colony?? null,
+                'datesuccess' =>date('Y-m-d', strtotime($request->datesuccess))?? null,
                 'cpdeed' => $request->cpdeed,
                 'statesdeed' => $request->statesdeed,
                 'municipysdeed' => $request->municipysdeed,
                 'colonydeed' => $request->colonydeed,
                 'personinformate' => $request->personinformate,
-                'curp' => $request->curp,
-                'description'=> $request->description,
-                'age' => $request->age,
-                'datereindence' => date('Y-m-d', strtotime($request->datereindence)),
+                'curp' => $request->curp?? null,
+                'description'=> $request->description?? null,
+                'age' => $request->age?? null,
+                'datereindence' => date('Y-m-d', strtotime($request->datereindence))?? null,
                 'date_created'=> date('Y-m-d', strtotime($request->date_created)),
                 'user_id' => Auth::user()->id,
-                'sites_id' => $request->sites_id,
-                'actwas_id' => $request->actwas_id,
+                'sites_id' => $request->sites_id ?? null,
+                'actwas_id' => $request->actwas_id ?? null,
                 'dependeces_id' => $dependece,
-                'causes_id' => $request->causes_id,
-                'dependececanalize_id' => $request->dependececanalize_id,
-                'gender_id' => $request->gender_id,
-                'belief_id' => $request->belief_id,
-                'statecivil_id' => $request->statecivil_id,
-                'literacy_id' => $request->literacy_id,
-                'childrens_id' => $request->childrens_id,
-                'existence_id' => $request->existence_id,
-                'adictions_id' => $request->adictions_id,
-                'diseases_id' => $request->diseases_id,
-                'violence_id' => $request->violence_id,
-                'family_id' => $request->family_id,
-                'school_id' => $request->school_id,
-                'indetified_id' => $request->indetified_id,
-                'meanemployeed_id'=> $request->meanemployeed_id,
-                'activies_id'=> $request->activies_id,
+                'causes_id' => $request->causes_id ?? null,
+                'dependececanalize_id' => $request->dependececanalize_id ?? null,
+                'gender_id' => $request->gender_id ?? null,
+                'belief_id' => $request->belief_id ?? null,
+                'statecivil_id' => $request->statecivil_id ?? null,
+                'literacy_id' => $request->literacy_id ?? null,
+                'childrens_id' => $request->childrens_id ?? null,
+                'existence_id' => $request->existence_id ?? null,
+                'adictions_id' => $request->adictions_id ?? null,
+                'diseases_id' => $request->diseases_id ?? null,
+                'violence_id' => $request->violence_id ?? null,
+                'family_id' => $request->family_id ?? null,
+                'school_id' => $request->school_id ?? null,
+                'indetified_id' => $request->indetified_id ?? null,
+                'meanemployeed_id' => $request->meanemployeed_id ?? null,
+                'activies_id' => $request->activies_id ?? null,
 
             ]);
+
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'Petición satisfactoria | grupo registrado.';
+            $response->data["alert_text"] = "Se ha creado correctamente el sitio";
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function update(Request $request, Response $response,int $id)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            
+            $dependece = Auth::user()->role == "Capturista" ? Auth::user()->dependece_id : $request->dependeces_id;
+            $create = Suicidepreventions::updateOrCreate(
+                ['id' => $id], // Busca el registro por su ID
+                [
+                    // 'dateregister' => $formattedDate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateregister))),
+                    'name' => $request->name,
+                    'invoice' => $request->invoice,
+                    'datecurrence' => date('Y-m-d', strtotime($request->datecurrence)),
+                    'cp' => $request->cp,
+                    'states' => $request->states,
+                    'municipys' => $request->municipys,
+                    'colony' => $request->colony,
+                    'datesuccess' =>date('Y-m-d', strtotime($request->datesuccess)),
+                    'cpdeed' => $request->cpdeed,
+                    'statesdeed' => $request->statesdeed,
+                    'municipysdeed' => $request->municipysdeed,
+                    'colonydeed' => $request->colonydeed,
+                    'personinformate' => $request->personinformate,
+                    'curp' => $request->curp,
+                    'estudiante' => $request->estudiante=="true"?1:0,
+                    'description'=> $request->description,
+                    'age' => $request->age,
+                    'datereindence' => date('Y-m-d', strtotime($request->datereindence)),
+                    'sites_id' => $request->sites_id,
+                    'actwas_id' => $request->actwas_id,
+                    'dependeces_id' => $dependece,
+                    'causes_id' => $request->causes_id,
+                    'dependececanalize_id' => $request->dependececanalize_id,
+                    'gender_id' => $request->gender_id,
+                    'belief_id' => $request->belief_id,
+                    'statecivil_id' => $request->statecivil_id,
+                    'literacy_id' => $request->literacy_id,
+                    'childrens_id' => $request->childrens_id,
+                    'existence_id' => $request->existence_id,
+                    'adictions_id' => $request->adictions_id,
+                    'diseases_id' => $request->diseases_id,
+                    'violence_id' => $request->violence_id,
+                    'family_id' => $request->family_id,
+                    'school_id' => $request->school_id,
+                    'indetified_id' => $request->indetified_id,
+                    'meanemployeed_id'=> $request->meanemployeed_id,
+                    'activies_id'=> $request->activies_id,
+                ]
+            );
 
             $response->data = ObjResponse::CorrectResponse();
             $response->data["message"] = 'Petición satisfactoria | grupo registrado.';
@@ -99,12 +158,17 @@ class ControllerSuicidePreventions extends Controller
      {
         $response->data = ObjResponse::DefaultResponse();
         try {
-           // $list = DB::select('SELECT * FROM users where active = 1');
-           // User::on('mysql_gp_center')->get();
-           $list = Suicidepreventions::orderBy('id', 'desc')
-           ->where('active', 1)
+           
+           $userRole = Auth::user()->role;
+
+           $query = Querypreventionsuicide::orderBy('id', 'desc')
+           ->where('active', 1);
+           
           
-           ->get();
+           if ($userRole == "Capturista") {
+            $query =$query->where('user_id', Auth::user()->id);
+            }
+           $list = $query->get();
        
        
        
@@ -125,9 +189,10 @@ class ControllerSuicidePreventions extends Controller
            
            $userRole = Auth::user()->role;
 
-           $query =  Querypreventionsuicide::orderBy('id', 'desc')
+           $query = Querypreventionsuicide::orderBy('id', 'desc')
            ->where('active', 1)
-          ;
+           ->whereNotNull("curp");
+
            
           
            if ($userRole == "Capturista") {

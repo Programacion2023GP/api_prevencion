@@ -34,6 +34,7 @@ class Suicidepreventions extends Model
         'description',
         'age',
         'datereindence',
+        'estudiante',
         'date_created',
         'user_id',
         'sites_id',
