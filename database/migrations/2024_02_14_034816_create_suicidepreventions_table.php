@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('description');
             $table->integer('age');
             $table->date('datereindence');
+            $table->date('date_created');
             $table->foreignId('user_id')->constrained('users','id');
             $table->foreignId('sites_id')->constrained('sites','id');
             $table->foreignId('actwas_id')->constrained('actwas','id');

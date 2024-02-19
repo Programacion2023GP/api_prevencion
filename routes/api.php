@@ -5,6 +5,7 @@ use App\Http\Controllers\ControllerActwas;
 use App\Http\Controllers\ControllerAdictions;
 use App\Http\Controllers\ControllerBelief;
 use App\Http\Controllers\ControllerCause;
+use App\Http\Controllers\ControllerCharts;
 use App\Http\Controllers\ControllerChildrens;
 use App\Http\Controllers\ControllerDependence;
 use App\Http\Controllers\ControllerDiseases;
@@ -193,12 +194,22 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/create', [ControllerSuicidePreventions::class, 'create']);
         Route::get('/findIndex', [ControllerSuicidePreventions::class, 'findIndex']);
         Route::get('/show', [ControllerSuicidePreventions::class, 'Show']);
-        
+
 
     });
     Route::prefix('auth')->group(function () {
 
         Route::post('/logout', [ControllerUsers::class, 'logout']);
+    });
+    Route::prefix('chart')->group(function () {
+
+        Route::post('/create', [ControllerCharts::class, 'create']);
+        Route::get  ('/index', [ControllerCharts::class, 'index']);
+        Route::get  ('/all', [ControllerCharts::class, 'all']);
+        Route::post('/destroy/{id}', [ControllerCharts::class, 'destroy']);
+
+
+        
     });
 });
 Route::prefix('auth')->group(function () {

@@ -41,6 +41,7 @@ class ControllerSuicidePreventions extends Controller
                 'description'=> $request->description,
                 'age' => $request->age,
                 'datereindence' => date('Y-m-d', strtotime($request->datereindence)),
+                'date_created'=> date('Y-m-d', strtotime($request->date_created)),
                 'user_id' => Auth::user()->id,
                 'sites_id' => $request->sites_id,
                 'actwas_id' => $request->actwas_id,

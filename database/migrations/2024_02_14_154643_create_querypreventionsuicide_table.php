@@ -17,7 +17,7 @@ return new class extends Migration
                 select users.name as sesion_nombre,users.email as sesion_correo,s.name as sitio,ac.name as acto_fue,d.name as dependencia,c.name as causa,dc.name dependencia_canalizada,
             g.name as genero,b.name as religion,st.name as estado_civil,li.name as alfabetismo_escolaridad,ch.name as posesion_hijos,
             ex.name as suicidas_familia,ad.name as adiciones,dis.name as enfermedades,vi.name as violencia,fa.name as familia,sch.name as centro_educativo,
-            ind.name as como_indentifica,mea.name as medio_empleado,act.name as ocupacion, sc.* 
+            ind.name as como_indentifica,mea.name as medio_empleado,act.name as ocupacion, sc.*
             from users inner join suicidepreventions as sc on users.id =sc.user_id
             inner join sites as s on s.id = sc.sites_id inner join actwas as ac on ac.id = sc.actwas_id
             inner join dependeces as d on d.id = sc.dependeces_id inner join cause as c on c.id =sc.causes_id
@@ -28,7 +28,7 @@ return new class extends Migration
             inner join diseases as dis on dis.id = sc.diseases_id inner join violence as vi on vi.id =sc.violence_id
             inner join family as fa on fa.id=sc.family_id inner join school as sch on sch.id = sc.school_id inner join indentified as ind on ind.id=sc.indetified_id
             inner join meansemployees as mea on mea.id = sc.meanemployeed_id inner join activities as act on act.id = sc.activies_id
-            group by sc.id"
+           "
         );
     }
 

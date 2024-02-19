@@ -21,7 +21,7 @@ class ControllerUsers extends Controller
        $response->data = ObjResponse::DefaultResponse();
        try {
 
-     
+
            $existingUser = User::where('email', $request->email)->first();
            if ($existingUser) {
                throw new \Exception('Ya existe un usuario con este correo.');
@@ -62,7 +62,7 @@ class ControllerUsers extends Controller
           'password' => 'required'
        ]);
        $user = User::where("$field", "$value")->where("active",1)->first();
-      
+
        if (!$user || !Hash::check($request->password, $user->password)) {
 
           throw ValidationException::withMessages([
@@ -129,23 +129,23 @@ class ControllerUsers extends Controller
 
            // Inicializar la consulta de usuarios
            $query = User::orderBy('id', 'desc')->where('active', 1);
-           
+
            // Si el usuario autenticado es "Super Admin sistemas", obtener todos los usuarios
            if ($userRole == "SuperAdmin") {
             $list = $query->where('role', '<>', 'SuperAdmin')->get();
-         } 
+         }
            // Si el usuario autenticado es "Administrador", obtener solo los "Capturista"
            elseif ($userRole == "Administrador") {
                $list = $query->where('role', 'Capturista')->get();
-           } 
+           }
            // Si el usuario autenticado es "Capturista", no devolver a nadie
            elseif ($userRole == "Capturista") {
                $list = collect(); // Devolver una colección vacía
            }
-       
-       
-       
-  
+
+
+
+
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
            $response->data["alert_text"] = "sitios encontrados";
@@ -159,9 +159,9 @@ class ControllerUsers extends Controller
      {
          $response->data = ObjResponse::DefaultResponse();
          try {
-             
- 
-           
+
+
+
             $affectedRows = User::where('id', $id)
             ->where(function ($query) use ($id) {
                $query->whereNotExists(function ($subquery) use ($id) {
@@ -174,7 +174,7 @@ class ControllerUsers extends Controller
             ->update([
                 'active' => DB::raw('NOT active'),
             ]);
-        
+
         if ($affectedRows === 0) {
             throw new \Exception('No se puede eliminar ya existe un registro con usuario');
         }
@@ -183,7 +183,7 @@ class ControllerUsers extends Controller
              $response->data = ObjResponse::CorrectResponse();
              $response->data["message"] = 'peticion satisfactoria | sitio dado de baja.';
              $response->data["alert_text"] ='sitio dado de baja';
- 
+
          } catch (\Exception $ex) {
              $response->data = ObjResponse::CatchResponse($ex->getMessage());
          }
