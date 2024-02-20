@@ -193,7 +193,7 @@ class ControllerSuicidePreventions extends Controller
 
            $query = Querypreventionsuicide::orderBy('id', 'desc')
            ->where('active', 1)
-           ->whereNotNull("curp");
+           ->whereNotNull("actwas_id");
 
            
           
