@@ -48,6 +48,7 @@ class Suicidepreventions extends Model
         'literacy_id',
         'childrens_id',
         'existence_id',
+        'addicion',
         'adictions_id',
         'diseases_id',
         'violence_id',

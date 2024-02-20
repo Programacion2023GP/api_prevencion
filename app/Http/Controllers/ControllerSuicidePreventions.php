@@ -40,8 +40,10 @@ class ControllerSuicidePreventions extends Controller
                 'curp' => $request->curp?? null,
                 'description'=> $request->description?? null,
                 'age' => $request->age?? null,
+                'addicion'=>$request->addicion,
                 'datereindence' => date('Y-m-d', strtotime($request->datereindence))?? null,
                 'date_created'=> date('Y-m-d', strtotime($request->date_created)),
+                'estudiante' => $request->estudiante,
                 'user_id' => Auth::user()->id,
                 'sites_id' => $request->sites_id ?? null,
                 'actwas_id' => $request->actwas_id ?? null,
@@ -78,7 +80,6 @@ class ControllerSuicidePreventions extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            
             $dependece = Auth::user()->role == "Capturista" ? Auth::user()->dependece_id : $request->dependeces_id;
             $create = Suicidepreventions::updateOrCreate(
                 ['id' => $id], // Busca el registro por su ID
@@ -97,8 +98,9 @@ class ControllerSuicidePreventions extends Controller
                     'municipysdeed' => $request->municipysdeed,
                     'colonydeed' => $request->colonydeed,
                     'personinformate' => $request->personinformate,
+                    'addicion'=>$request->addicion,
                     'curp' => $request->curp,
-                    'estudiante' => $request->estudiante=="true"?1:0,
+                    'estudiante' => $request->estudiante,
                     'description'=> $request->description,
                     'age' => $request->age,
                     'datereindence' => date('Y-m-d', strtotime($request->datereindence)),
