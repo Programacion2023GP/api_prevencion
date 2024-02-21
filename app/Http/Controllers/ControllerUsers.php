@@ -31,7 +31,7 @@ class ControllerUsers extends Controller
               'email' => $request->email,
               'name' => $request->name,
               'role' => $request->role,
-              'dependece_id'=>$request->dependece_id,
+              'dependece_id'=>$request->dependece_id??null,
           ]);
     //       if ($request->has('groups') && is_array($request->groups) && count($request->groups) > 0) {
     //        foreach ($request->groups as $item) {
