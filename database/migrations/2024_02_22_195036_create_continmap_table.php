@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 60);
-            $table->foreignId('municipio')->constrained('municipios')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('municipio')->constrained('municipios');
             $table->string('asentamiento', 40);
             $table->integer('codigo_postal');
             $table->decimal('latitud', 16, 13)->nullable();
@@ -25,7 +25,7 @@ return new class extends Migration
         Schema::create('municipios', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 60);
-            $table->foreignId('estado')->constrained('estados')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('estado')->constrained('estados');
             $table->integer('cp_min');
             $table->integer('cp_max');
             $table->enum('huso_horario', ['Tiempo del Centro', 'Tiempo del Noroeste', 'Tiempo del Pacífico', 'Tiempo del Sureste', 'Tiempo del Centro en Frontera', 'Tiempo del Noroeste en Frontera', 'Tiempo del Pacífico en Frontera', 'Tiempo del Pacífico Sonora'])->nullable();
