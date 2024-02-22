@@ -21,28 +21,18 @@ return new class extends Migration
             $table->integer('cp_max');
         });
         Schema::create('municipios', function (Blueprint $table) {
-            $table->integer('id')->unsigned()->primary();
+            $table->id();
             $table->string('nombre', 60);
             $table->integer('estado');
-            $table->foreign('estado')->references('clave')->on('estados');
             $table->integer('cp_min');
             $table->integer('cp_max');
-            $table->enum('huso_horario', [
-                'Tiempo del Centro',
-                'Tiempo del Noroeste',
-                'Tiempo del Pacífico',
-                'Tiempo del Sureste',
-                'Tiempo del Centro en Frontera',
-                'Tiempo del Noroeste en Frontera',
-                'Tiempo del Pacífico en Frontera',
-                'Tiempo del Pacífico Sonora'
-            ])->nullable();
+            $table->enum('huso_horario', ['Tiempo del Centro', 'Tiempo del Noroeste', 'Tiempo del Pacífico', 'Tiempo del Sureste', 'Tiempo del Centro en Frontera', 'Tiempo del Noroeste en Frontera', 'Tiempo del Pacífico en Frontera', 'Tiempo del Pacífico Sonora'])->nullable();
+            $table->timestamps();
         });
-        
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 60);
-            $table->foreignId('municipio')->constrained('municipios');
+            $table->integer('municipio');
             $table->string('asentamiento', 40);
             $table->integer('codigo_postal');
             $table->decimal('latitud', 16, 13)->nullable();
@@ -82,8 +72,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('estados');
-        Schema::dropIfExists('municipios');
         Schema::dropIfExists('colonias');
+        Schema::dropIfExists('municipios');
         Schema::dropIfExists('continmap');
     }
 };
