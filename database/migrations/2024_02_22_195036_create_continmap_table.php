@@ -21,13 +21,22 @@ return new class extends Migration
             $table->integer('cp_max');
         });
         Schema::create('municipios', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->unsigned()->primary();
             $table->string('nombre', 60);
-            $table->foreignId('estado')->constrained('estados');
+            $table->tinyInteger('estado')->unsigned();
             $table->integer('cp_min');
             $table->integer('cp_max');
-            $table->enum('huso_horario', ['Tiempo del Centro', 'Tiempo del Noroeste', 'Tiempo del Pacífico', 'Tiempo del Sureste', 'Tiempo del Centro en Frontera', 'Tiempo del Noroeste en Frontera', 'Tiempo del Pacífico en Frontera', 'Tiempo del Pacífico Sonora'])->nullable();
-            $table->timestamps();
+            $table->enum('huso_horario', [
+                'Tiempo del Centro',
+                'Tiempo del Noroeste',
+                'Tiempo del Pacífico',
+                'Tiempo del Sureste',
+                'Tiempo del Centro en Frontera',
+                'Tiempo del Noroeste en Frontera',
+                'Tiempo del Pacífico en Frontera',
+                'Tiempo del Pacífico Sonora'
+            ])->nullable();
+            $table->foreign('estado')->references('clave')->on('estados')->onDelete('restrict')->onUpdate('restrict');
         });
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
