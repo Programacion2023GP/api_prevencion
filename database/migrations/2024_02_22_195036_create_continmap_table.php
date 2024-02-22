@@ -23,6 +23,7 @@ return new class extends Migration
         Schema::create('municipios', function (Blueprint $table) {
             $table->integer('id')->unsigned()->primary();
             $table->string('nombre', 60);
+            $table->integer('estado');
             $table->foreign('estado')->references('clave')->on('estados');
             $table->integer('cp_min');
             $table->integer('cp_max');
