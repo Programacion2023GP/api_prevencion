@@ -23,7 +23,7 @@ return new class extends Migration
         Schema::create('municipios', function (Blueprint $table) {
             $table->integer('id')->unsigned()->primary();
             $table->string('nombre', 60);
-            $table->foreignId('estado')->constrained('estados');
+            $table->foreign('estado')->references('clave')->on('estados');
             $table->integer('cp_min');
             $table->integer('cp_max');
             $table->enum('huso_horario', [
@@ -36,8 +36,8 @@ return new class extends Migration
                 'Tiempo del Pacífico en Frontera',
                 'Tiempo del Pacífico Sonora'
             ])->nullable();
-
         });
+        
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 60);
