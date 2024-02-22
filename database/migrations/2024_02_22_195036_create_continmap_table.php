@@ -36,7 +36,8 @@ return new class extends Migration
                 'Tiempo del Pacífico en Frontera',
                 'Tiempo del Pacífico Sonora'
             ])->nullable();
-            $table->foreign('estado')->references('clave')->on('estados')->onDelete('restrict')->onUpdate('restrict');
+            $table->foreignId('estado')->constrained('estados');
+
         });
         Schema::create('colonias', function (Blueprint $table) {
             $table->id();
