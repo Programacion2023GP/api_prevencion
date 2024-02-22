@@ -21,6 +21,7 @@ use App\Http\Controllers\ControllerStateCivil;
 use App\Http\Controllers\ControllerSuicidePreventions;
 use App\Http\Controllers\ControllerUsers;
 use App\Http\Controllers\ControllerViolence;
+use App\Models\Suicidepreventions;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -208,9 +209,10 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get  ('/index', [ControllerCharts::class, 'index']);
         Route::get  ('/all', [ControllerCharts::class, 'all']);
         Route::post('/destroy/{id}', [ControllerCharts::class, 'destroy']);
+    });
+    Route::prefix('map')->group(function () {
 
-
-        
+        Route::get  ('/index', [ControllerSuicidePreventions::class, 'map']);
     });
 });
 Route::prefix('auth')->group(function () {

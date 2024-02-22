@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Suicidepreventions;
 use App\Models\Dependence;
+use App\Models\Map;
 use App\Models\Querypreventionsuicide;
 use App\Models\ObjResponse;
 use Illuminate\Http\Response;
@@ -215,5 +216,18 @@ class ControllerSuicidePreventions extends Controller
         return response()->json($response, $response->data["status_code"]);
      } 
     
-
+     public function Map(Response $response)
+     {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            $query = Map::all(); // Cambiado a Map::all() para obtener todos los registros de la tabla Map 
+           $response->data = ObjResponse::CorrectResponse();
+           $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
+           $response->data["alert_text"] = "sitios encontrados";
+           $response->data["result"] = $query;
+        } catch (\Exception $ex) {
+           $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+     } 
 }
