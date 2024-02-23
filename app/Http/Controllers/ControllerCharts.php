@@ -119,4 +119,49 @@ class ControllerCharts extends Controller
         }
         return response()->json($response, $response->data["status_code"]);
     }
+    public function moveUp(int $id, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            
+
+            $chart = charts::where('id', $id)->where("user_id",Auth::user()->id)->first();
+           $chartafter = charts::where('position', $chart->position-1)->where("user_id",Auth::user()->id)->first();
+            $afterposition =$chart->position;
+           $chart->position=$chartafter->position;
+           $chartafter->position= $afterposition;
+           $chart->update();
+           $chartafter->update();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria ';
+            $response->data["alert_text"] ='cambiado de posicion';
+
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
+    public function moveDown(int $id, Response $response)
+    {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+            
+
+          
+           $chart = charts::where('id', $id)->where("user_id",Auth::user()->id)->first();
+           $chartafter = charts::where('position', $chart->position+1)->where("user_id",Auth::user()->id)->first();
+            $afterposition =$chart->position;
+           $chart->position=$chartafter->position;
+           $chartafter->position= $afterposition;
+           $chart->update();
+           $chartafter->update();
+            $response->data = ObjResponse::CorrectResponse();
+            $response->data["message"] = 'peticion satisfactoria ';
+            $response->data["alert_text"] ='cambiado de posicion';
+
+        } catch (\Exception $ex) {
+            $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+    }
 }

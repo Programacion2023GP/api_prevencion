@@ -204,8 +204,10 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/logout', [ControllerUsers::class, 'logout']);
     });
     Route::prefix('chart')->group(function () {
-
         Route::post('/create', [ControllerCharts::class, 'create']);
+        Route::get('/moveDown/{id}', [ControllerCharts::class, 'moveDown']);
+
+        Route::get('/moveUp/{id}', [ControllerCharts::class, 'moveUp']);
         Route::get  ('/index', [ControllerCharts::class, 'index']);
         Route::get  ('/all', [ControllerCharts::class, 'all']);
         Route::post('/destroy/{id}', [ControllerCharts::class, 'destroy']);
