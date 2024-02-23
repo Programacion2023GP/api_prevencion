@@ -19,7 +19,6 @@ class Suicidepreventions extends Model
         'dateregister',
         'name',
         'invoice',
-        'datecurrence',
         'cp',
         'states',
         'municipys',

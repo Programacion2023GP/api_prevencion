@@ -21,12 +21,13 @@ class ControllerSuicidePreventions extends Controller
     {
         $response->data = ObjResponse::DefaultResponse();
         try {
-
+            $latestSuicidePrevention = Suicidepreventions::orderBy('id', 'desc')->first();
+            $nextId = $latestSuicidePrevention ? $latestSuicidePrevention->id + 1 : 1;
             $dependece = Auth::user()->role == "Capturista" ? Auth::user()->dependece_id : $request->dependeces_id;
             $create = Suicidepreventions::create([
                 'dateregister' => $formattedDate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateregister))),
                 'name' => $request->name ?? null,
-                'invoice' => $request->invoice,
+                'invoice' => $nextId,
                 'datecurrence' => date('Y-m-d', strtotime($request->datecurrence)),
                 'cp' => $request->cp?? null,
                 'states' => $request->states?? null,
@@ -41,10 +42,10 @@ class ControllerSuicidePreventions extends Controller
                 'curp' => $request->curp?? null,
                 'description'=> $request->description?? null,
                 'age' => $request->age?? null,
-                'addicion'=>$request->addicion,
+                'addicion'=>$request->addicion?? false,
                 'datereindence' => date('Y-m-d', strtotime($request->datereindence))?? null,
                 'date_created'=> date('Y-m-d', strtotime($request->date_created)),
-                'estudiante' => $request->estudiante,
+                'estudiante' => $request->estudiante?? false,
                 'user_id' => Auth::user()->id,
                 'sites_id' => $request->sites_id ?? null,
                 'actwas_id' => $request->actwas_id ?? null,
@@ -82,13 +83,13 @@ class ControllerSuicidePreventions extends Controller
         $response->data = ObjResponse::DefaultResponse();
         try {
             $dependece = Auth::user()->role == "Capturista" ? Auth::user()->dependece_id : $request->dependeces_id;
+        
             $create = Suicidepreventions::updateOrCreate(
                 ['id' => $id], // Busca el registro por su ID
                 [
                     // 'dateregister' => $formattedDate = date('Y-m-d', strtotime(str_replace('/', '-', $request->dateregister))),
                     'name' => $request->name,
-                    'invoice' => $request->invoice,
-                    'datecurrence' => date('Y-m-d', strtotime($request->datecurrence)),
+                    // 'datecurrence' => date('Y-m-d', strtotime($request->datecurrence)),
                     'cp' => $request->cp,
                     'states' => $request->states,
                     'municipys' => $request->municipys,
