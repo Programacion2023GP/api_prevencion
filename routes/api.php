@@ -211,7 +211,7 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('/destroy/{id}', [ControllerCharts::class, 'destroy']);
     });
     Route::prefix('map')->group(function () {
-
+    
         Route::get  ('/index', [ControllerSuicidePreventions::class, 'map']);
     });
 });

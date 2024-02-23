@@ -220,11 +220,34 @@ class ControllerSuicidePreventions extends Controller
      {
         $response->data = ObjResponse::DefaultResponse();
         try {
-            $query = Map::all(); // Cambiado a Map::all() para obtener todos los registros de la tabla Map 
+            $resultados = DB::select("
+            SELECT 
+                COUNT(sp.colonydeed) AS conteos,
+                colonias.nombre,
+                MAX(colonias.longitud) AS longitud,
+                MAX(colonias.latitud) AS latitud
+            FROM 
+                estados 
+            INNER JOIN 
+                municipios ON estados.clave = municipios.estado
+            INNER JOIN 
+                colonias ON colonias.municipio = municipios.id
+            INNER JOIN 
+                (
+                    SELECT CONVERT(colonydeed USING utf8mb4) AS colonydeed
+                    FROM suicidepreventions
+                ) AS sp ON sp.colonydeed = colonias.nombre
+            WHERE 
+                estados.clave = 10 
+                AND municipios.id = 10007
+            GROUP BY 
+                colonias.nombre;
+        ");
+        ; // Cambiado a Map::all() para obtener todos los registros de la tabla Map 
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
            $response->data["alert_text"] = "sitios encontrados";
-           $response->data["result"] = $query;
+           $response->data["result"] = $resultados;
         } catch (\Exception $ex) {
            $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }
