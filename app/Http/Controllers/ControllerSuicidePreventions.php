@@ -223,32 +223,64 @@ class ControllerSuicidePreventions extends Controller
         try {
             $resultados = DB::select("
             SELECT 
-                COUNT(sp.colonydeed) AS conteos,
-                colonias.nombre,
-                MAX(colonias.longitud) AS longitud,
-                MAX(colonias.latitud) AS latitud
-            FROM 
-                estados 
-            INNER JOIN 
-                municipios ON estados.clave = municipios.estado
-            INNER JOIN 
-                colonias ON colonias.municipio = municipios.id
-            INNER JOIN 
-                (
-                    SELECT CONVERT(colonydeed USING utf8mb4) AS colonydeed
-                    FROM suicidepreventions
-                ) AS sp ON sp.colonydeed = colonias.nombre
-            WHERE 
-                estados.clave = 10 
-                AND municipios.id = 10007
-            GROUP BY 
-                colonias.nombre;
+            COUNT(DISTINCT sp.id) AS conteos,
+            group_concat(sp.id) as ids,
+            colonias.nombre,
+            MAX(colonias.longitud) AS longitud,
+            MAX(colonias.latitud) AS latitud
+        FROM 
+            estados 
+        INNER JOIN 
+            municipios ON estados.clave = municipios.estado
+        INNER JOIN 
+            colonias ON colonias.municipio = municipios.id
+        INNER JOIN 
+            (
+                SELECT 
+                    id,
+                    CONVERT(colonydeed USING utf8mb4) AS colonydeed
+                FROM 
+                    suicidepreventions where gender_id is not null
+            ) AS sp ON sp.colonydeed = colonias.nombre
+        WHERE 
+            estados.clave = 10 
+            AND municipios.id = 10007
+        GROUP BY 
+            colonias.nombre;
+        
         ");
         ; // Cambiado a Map::all() para obtener todos los registros de la tabla Map 
            $response->data = ObjResponse::CorrectResponse();
            $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
            $response->data["alert_text"] = "sitios encontrados";
            $response->data["result"] = $resultados;
+        } catch (\Exception $ex) {
+           $response->data = ObjResponse::CatchResponse($ex->getMessage());
+        }
+        return response()->json($response, $response->data["status_code"]);
+     } 
+     public function DataMap(Response $response,int $id)
+     {
+        $response->data = ObjResponse::DefaultResponse();
+        try {
+           
+           $userRole = Auth::user()->role;
+
+           $query = Querypreventionsuicide::orderBy('id', 'desc')
+           ->where('active', 1)->where('id',$id)
+           ->whereNotNull("gender_id");
+
+           
+        
+           $list = $query->get();
+       
+       
+       
+  
+           $response->data = ObjResponse::CorrectResponse();
+           $response->data["message"] = 'peticion satisfactoria | lista de sitios.';
+           $response->data["alert_text"] = "sitios encontrados";
+           $response->data["result"] = $list;
         } catch (\Exception $ex) {
            $response->data = ObjResponse::CatchResponse($ex->getMessage());
         }

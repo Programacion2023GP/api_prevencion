@@ -214,7 +214,9 @@ Route::middleware('auth:sanctum')->group(function(){
     });
     Route::prefix('map')->group(function () {
     
-        Route::get  ('/index', [ControllerSuicidePreventions::class, 'map']);
+        Route::get('/index', [ControllerSuicidePreventions::class, 'map']);
+        Route::get('/data/{id}', [ControllerSuicidePreventions::class, 'DataMap']);
+
     });
 });
 Route::prefix('auth')->group(function () {
